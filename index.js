@@ -24,13 +24,14 @@ app.use( express.static('public') );
 // Esto es para obtener en el body de la request la data pasada en formato json
 app.use( express.json() );
 
-// Rutas
+// ¿ Rutas
 // Meaning: todo lo que este archivo vaya a exportar './routes/auth' habilitalo para la ruta /api/auth
 app.use('/api/auth', require('./routes/auth') );
 
-// TODO: CRUD: eventos
+// CRUD: eventos
+app.use('/api/events', require('./routes/events'));
 
 // Escuchar peticiones
 app.listen( process.env.PORT , () => {
-    console.log(`Servidor corriendo en puerto ${ 4000 }`);
+    console.log(`Servidor corriendo en puerto ${ process.env.PORT }`);
 });

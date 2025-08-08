@@ -24,10 +24,15 @@ const validarJWT = ( req, res = response , next ) => {
         );
 
         // Una vez validamos el token, colocamos los datos del mismo en el body de la request para así pasarlos a las siguientes funciones a través del next()
+        // * Esto nos permitirá acceder al uid y nombre del usuario desde el objeto req en cualquier ruta que utilice este middleware, por ejemplo el POST en Events
         req.uid = uid;
         req.name = name;
 
     } catch (error) {
+        // * Esto se puede tunear dejando esto en un archivo de texto plano con la hora en la que sucedió
+        // * A su vez se puede añadir la dirección ip desde la que se hace para ponerla en una lista negra, pues alguien podría estar
+        // * Intentando acceder a través de modificaciones en el token, pero esto solo en caso de que las modificaciones sean repetidas y necesitaramos bloquearlas 
+
         return res.status(401).json({
             ok: false,
             msg: 'Token no válido'
