@@ -1,3 +1,5 @@
+const path = require( 'path' ); //Importamos nuestro propio path
+
 const express = require('express');
 require('dotenv').config(); // Establecemos el paquete dotenv para usar variables de entorno
 const cors = require('cors');
@@ -30,6 +32,17 @@ app.use('/api/auth', require('./routes/auth') );
 
 // CRUD: eventos
 app.use('/api/events', require('./routes/events'));
+
+// Para servir las rutas del react Router (realemnte cualquier ruta que no esté anteriormente definida) 
+// y evitar que express intente manejarlas por sí mismo
+// Esto es porque naturalmente express intentará servir aquellas rutas que no definimos, de esta forma dejamos que React router tome el control
+// El /*splat es la notación equivalente de * en express v5
+app.use('/*splat', (req, res) => {
+    // __dirname = Apuntar a donde está corriendo nuestra aplicación en este momento
+    // luego, en el segundo parámetro le adjuntamos el public/index.html
+    res.sendFile( path.join( __dirname , 'public/index.html') );
+});
+
 
 // Escuchar peticiones
 app.listen( process.env.PORT , () => {
